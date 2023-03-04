@@ -13,7 +13,6 @@ body('email', 'Enter a valid email').isEmail(),
 body('password', 'enter a valid password').isLength({ min: 5 })], async (req, res) => {
 
     //If there are error, return Bad request and the errors
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -73,7 +72,7 @@ body('password', 'password cannot be blank').exists()], async (req, res) => {
             return res.status(400).json({ error: 'Please try t login with correct credentials' });
         }
 
-        const data = {
+        const data  = {
             user: {
                 id: user.id
             }
