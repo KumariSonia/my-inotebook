@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import Alert from './Alert'
 
 const Navbar = () => {
   return (
@@ -9,6 +10,7 @@ const Navbar = () => {
         <Link className="nav-link" to="/">Home</Link>
         <Link className="nav-link" to="/About">About</Link>
       </nav>
+      <Alert message ="This is a primary alert—check it out!"/>
       <Outlet />
     </>
   )

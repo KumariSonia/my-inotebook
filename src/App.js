@@ -7,6 +7,7 @@ import NoteState from "./context/notes/NoteState";
 
 function App() {
   return (
+    <>
     <NoteState>
     <BrowserRouter>
       <Routes>
@@ -18,6 +19,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     </NoteState>
+    </>
   );
 }
 
