@@ -36,21 +36,8 @@ const NoteState = (props) => {
             },
             body: JSON.stringify({ title, description, tag })
         });
-
         const data = await response.json();
-
-        console.log(data)
-
-        const note = {
-            "_id": "6402edb477e7bc66fd7b4666",
-            "user": "6402d33128cc358636f9cb7f",
-            "title": title,
-            "description": description,
-            "tag": tag,
-            "date": "2023-03-04T07:05:24.754Z",
-            "__v": 0
-        };
-        setNotes(notes.concat(note));
+        setNotes(notes.concat(data));
     }
     //Delete a Note
     const deleteNote = async (id) => {
@@ -63,7 +50,6 @@ const NoteState = (props) => {
                 "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwMmQzMzEyOGNjMzU4NjM2ZjljYjdmIn0sImlhdCI6MTY3ODAwNTYzOH0.BRYRu3Xgph_4kHRYwcXm7ySkQKgY8kKO1Zv6rvXLsTQ"
             }
         });
-
         const data = await response.json();
         console.log(data)
 

@@ -65,9 +65,6 @@ const Notes = () => {
                             <Form.Label>Tag</Form.Label>
                             <Form.Control type="text" value={note.tag} id="tag" name="tag" placeholder="Enter tag" onChange={onChange} />
                         </Form.Group>
-                        {/* <Button variant="primary" type="submit" onClick={handleOnClick}>
-                    Add Note
-                </Button> */}
                     </Form>
 
                 </Modal.Body>
@@ -75,7 +72,7 @@ const Notes = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleOnClick}>
+                    <Button disabled={note.title.length < 5 || note.description.length < 5} variant="primary" onClick={handleOnClick}>
                         UpdateNote
                     </Button>
                 </Modal.Footer>
@@ -83,6 +80,7 @@ const Notes = () => {
             {/* modal ended */}
             <div className='row my-3'>
                 <h2>Your notes</h2>
+                {notes.length === 0 && "No notes to display"}
                 {notes.map((note) => {
                     return <NoteItem key={note._id} note={note} updateNote={updateNote} />
                 })}
