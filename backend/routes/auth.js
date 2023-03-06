@@ -55,33 +55,39 @@ body('password', 'enter a valid password').isLength({ min: 5 })], async (req, re
 router.post('/login', [body('email', 'Enter a valid email').isEmail(),
 body('password', 'password cannot be blank').exists()], async (req, res) => {
     //If there are error, return Bad request and the errors
+    let success=false
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        success=false;
+        return res.status(400).json({ success,errors: errors.array() });
     }
     const { email, password } = req.body;
     try {
 
         let user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: 'Please try t login with correct credentials' });
+            success=false;
+            return res.status(400).json({success, error: 'Please try t login with correct credentials' });
         }
 
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
-            return res.status(400).json({ error: 'Please try t login with correct credentials' });
+            success=false;
+            return res.status(400).json({ success,error: 'Please try t login with correct credentials' });
         }
 
-        const data  = {
+        const data = {
             user: {
                 id: user.id
             }
         }
         const authToken = jwt.sign(data, jwtSecretToken);
-        res.json({ authToken })
+        success = true;
+        res.json({ success, authToken })
 
     } catch (error) {
-        res.status(500).send("Ineternal server error " + error);
+        success=false;
+        res.status(500).send(success,"Ineternal server error " + error);
     }
 })
 

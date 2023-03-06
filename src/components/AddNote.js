@@ -17,7 +17,6 @@ const AddNote = () => {
 
     const onChange = (event) => {
         setNote({ ...note, [event.target.name]: event.target.value })
-
     }
 
     return (
