@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
-import Alert from './Alert'
+import DefaultAlert from './DefaultAlert'
 
-const Navbar = () => {
+const Navbar = (props) => {
   return (
     <>
       <nav className="nav bg-dark">
@@ -14,7 +14,7 @@ const Navbar = () => {
         <Link className="btn btn-primary mx-2 " to="/signup" role="button">Signup</Link>
         {/* </div> */}
       </nav>
-      <Alert message="This is a primary alert—check it out!" />
+      {props.showAlert && <DefaultAlert message={props.message} variant={props.variant} />}
       <Outlet />
     </>
   )

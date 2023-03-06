@@ -14,11 +14,11 @@ body('password', 'enter a valid password').isLength({ min: 5 })], async (req, re
 
     let success = false
 
-    //If there are error, return Bad request and the errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    //If there are error, return Bad request and the error
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
         success = false;
-        return res.status(400).json({ success, errors: errors.array() });
+        return res.status(400).json({ success, error: error.array() });
     }
 
     //check weather the user with this email exists already
@@ -26,7 +26,7 @@ body('password', 'enter a valid password').isLength({ min: 5 })], async (req, re
         let user = await User.findOne({ email: req.body.email })
         if (user) {
             success = false
-            return res.status(400).json({ success, errors: 'Sorry a user with this email alre3ady exists' });
+            return res.status(400).json({ success, error: 'Sorry a user with this email already exists' });
         }
         const salt = await bcrypt.genSalt(10);
         const securePassword = await bcrypt.hash(req.body.password, salt);
@@ -56,12 +56,12 @@ body('password', 'enter a valid password').isLength({ min: 5 })], async (req, re
 
 router.post('/login', [body('email', 'Enter a valid email').isEmail(),
 body('password', 'password cannot be blank').exists()], async (req, res) => {
-    //If there are error, return Bad request and the errors
+    //If there are error, return Bad request and the error
     let success = false
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
         success = false;
-        return res.status(400).json({ success, errors: errors.array() });
+        return res.status(400).json({ success, error: error.array() });
     }
     const { email, password } = req.body;
     try {
@@ -69,7 +69,7 @@ body('password', 'password cannot be blank').exists()], async (req, res) => {
         let user = await User.findOne({ email });
         if (!user) {
             success = false;
-            return res.status(400).json({ success, error: 'Please try t login with correct credentials' });
+            return res.status(400).json({ success, error: 'Please try to login with correct credentials' });
         }
 
         const passwordCompare = await bcrypt.compare(password, user.password);

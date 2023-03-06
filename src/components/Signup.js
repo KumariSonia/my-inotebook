@@ -2,31 +2,38 @@ import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = (props) => {
 
   const [user, setUser] = useState({ name: "", email: "", password: "", confirmPassword: "" });
   const navigate = useNavigate()
   const handleSignUp = async (event) => {
     event.preventDefault();
 
-    //Api call
-    const url = "http://localhost:8080/api/auth/createuser"
-    const response = await fetch(url, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name: user.name, email: user.email, password: user.password })
-    });
-    const data = await response.json();
-    if (data.success) {
-      //save the auth token and redirect
-      localStorage.setItem('token', data.authToken);
-      navigate('/')
-    }
-    else {
-      alert("Invalid users");
+    try {
+      const url = "http://localhost:8080/api/auth/createuser";
+      //Api call
+      const response = await fetch(url, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: user.name, email: user.email, password: user.password })
+      });
+      const data = await response.json();
+      if (data.success) {
+        //save the auth token and redirect
+        console.log("data.authToken",data.authToken);
+        localStorage.setItem('token', data.authToken);
+        navigate('/')
+        props.updateShow("successfully registered", "success");
+      }
+      else {
+        //alert("Invalid users");
+        props.updateShow(data.error, "danger");
+      }
+    } catch (error) {
+      props.updateShow(error, "danger");
     }
 
   }
@@ -37,7 +44,7 @@ const Signup = () => {
 
 
   return (
-    <Form className='container' onSubmit={handleSignUp}>
+    <Form className='container my-3' onSubmit={handleSignUp}>
 
       <Form.Group className="mb-3">
         <Form.Label>Name</Form.Label>
